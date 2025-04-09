@@ -14,11 +14,40 @@ class Controller:
         self._mese = 0
 
     def handle_umidita_media(self, e):
-        pass
+        mese = self._view.dd_mese.value
 
+        if mese is None or mese == "":
+            self._view.create_alert("Inserire mese")
+            return
+        mese = int(mese)
+
+        lista_temp = []
+        for el in self._model.getUmiditaAvg(mese):
+            lista_temp.append(el)
+
+        self._view.lst_result.controls.append(ft.Text(f"L'umidità media del mese selezionato è:\n"
+                                                      f"{lista_temp[0]["Localita"]}: {lista_temp[0]["avg(s.Umidita)"]}\n"
+                                                      f"{lista_temp[1]["Localita"]}: {lista_temp[1]["avg(s.Umidita)"]}\n"
+                                                      f"{lista_temp[2]["Localita"]}: {lista_temp[2]["avg(s.Umidita)"]}"))
+        self._view.update_page()
 
 
     def handle_sequenza(self, e):
+        mese = self._view.dd_mese.value
+
+        if mese is None or mese == "":
+            self._view.create_alert("Inserire mese")
+            return
+
+        mese = int(mese)
+        self._view.lst_result.controls.append(ft.Text(f"La sequenza ottima ha costo  ed è:\n"))
+        lista_temp = []
+        for el in self._model.recursion(mese):
+            lista_temp.append(el)
+            self._view.lst_result.controls.append(ft.Text(el))
+
+
+        self._view.update_page()
         pass
 
     def read_mese(self, e):
