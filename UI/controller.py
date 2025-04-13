@@ -40,11 +40,14 @@ class Controller:
             return
 
         mese = int(mese)
-        self._view.lst_result.controls.append(ft.Text(f"La sequenza ottima ha costo  ed è:\n"))
+        self._model.calcola_percorsi(mese)
+        self._view.lst_result.controls.append(ft.Text(f"La sequenza ottima ha costo {self._model.costo_minimo} ed è:\n"))
         lista_temp = []
-        for el in self._model.recursion(mese):
-            lista_temp.append(el)
-            self._view.lst_result.controls.append(ft.Text(el))
+        for percorso in self._model.lista_percorsi:
+            for el in percorso:
+                print(f"{el}\n")
+                riga = f"[{el["Localita"]} - {el["Data"]}] Umidità = {el["Umidita"]}"
+                self._view.lst_result.controls.append(ft.Text(riga))
 
 
         self._view.update_page()
